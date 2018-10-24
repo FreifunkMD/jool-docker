@@ -11,19 +11,20 @@ RUN set -ex \
         gcc \
         build-base \
         libnl3-dev \
+        # needed for autogen.sh
         autoconf \
         automake \
+        bash \
         # needed to stop the build from failing on the kernel module. Other than that, not needed, since kernel module only matters on host
         linux-headers \
         # alpine linux is based on musl libc instead of gnu libc, so installing argp-standalone
         argp-standalone \
     && update-ca-certificates \
-    && wget https://github.com/NICMx/releases/raw/master/Jool/Jool-$JOOL_VER.zip -O /jool.zip \
-    && unzip /jool.zip -d / \
-    && cd /Jool-$JOOL_VER/usr \
-    # version mismatch, so we have to recreate aclocal.m4
-    && aclocal \
-    && autoreconf \
+    && wget https://github.com/NICMx/Jool/archive/v$JOOL_VER.tar.gz -O /jool.tar.gz \
+    && mkdir /jool \
+    && tar -xvf /jool.tar.gz -C /jool --strip-components=1 \
+    && cd /jool/usr \
+    && ./autogen.sh \
     # Add LIBNLGENL3_CFLAGS and LIBNLGENL3_LIBS to configure if you chose not to install pkg-config.
     && ./configure LIBNLGENL3_CFLAGS=-I/usr/include/libnl3 LIBNLGENL3_LIBS="-lnl-genl-3 -lnl-3" \
     && make \
