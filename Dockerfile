@@ -27,7 +27,7 @@ RUN set -ex \
     && ./autogen.sh \
     # Add LIBNLGENL3_CFLAGS and LIBNLGENL3_LIBS to configure if you chose not to install pkg-config.
     && ./configure LIBNLGENL3_CFLAGS=-I/usr/include/libnl3 LIBNLGENL3_LIBS="-lnl-genl-3 -lnl-3" \
-    && make \
+    && make -j$(nproc) \
     && make install
 
 
