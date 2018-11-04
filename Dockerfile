@@ -2,7 +2,7 @@ FROM alpine:latest as BUILD
 
 LABEL maintainer="Jasper Orschulko <jasper@fancydomain.eu>"
 
-ARG JOOL_VER=
+ARG JOOL_VER=3.5.7
 
 RUN set -ex \
     && apk --no-cache add \
@@ -20,7 +20,7 @@ RUN set -ex \
         # alpine linux is based on musl libc instead of gnu libc, so installing argp-standalone
         argp-standalone \
     && update-ca-certificates \
-    && wget https://github.com/NICMx/Jool/archive/v$JOOL_VER.tar.gz -O /jool.tar.gz \
+    && wget https://github.com/NICMx/Jool/archive/v${JOOL_VER}.tar.gz -O /jool.tar.gz \
     && mkdir /jool \
     && tar -xvf /jool.tar.gz -C /jool --strip-components=1 \
     && cd /jool/usr \

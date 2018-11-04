@@ -4,14 +4,16 @@ JOOL_VERSION='3.5.7'
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
+    echo "This script must be run as root.  Aborting."
+    exit 1
 fi
 
-# Make sure dkms docker and curl are installed
-command -v dkms >/dev/null 2>&1 || { echo >&2 "dkms is required but not installed.  Aborting."; exit 1; }
-command -v wget >/dev/null 2>&1 || { echo >&2 "wget is required but not installed.  Aborting."; exit 1; }
-command -v docker >/dev/null 2>&1 || { echo >&2 "docker is required but not installed.  Aborting."; exit 1; }
+# Make sure dkms, docker and curl are installed
+(
+    command -v dkms >/dev/null 2>&1 || { echo >&2 "dkms is required but not installed.  Aborting."; exit 1; }
+    command -v wget >/dev/null 2>&1 || { echo >&2 "wget is required but not installed.  Aborting."; exit 1; }
+    command -v docker >/dev/null 2>&1 || { echo >&2 "docker is required but not installed.  Aborting."; exit 1; }
+)
 
 echo 'downloading and extracting source...'
 (
@@ -30,8 +32,11 @@ echo 'building and installing kernel module...'
     modprobe jool
 )
 
-echo 'building docker container...'
-docker build -t jool-docker:"${JOOL_VERSION}" --build-arg JOOL_VER="${JOOL_VERSION}" .
+echo 'pulling docker container...'
+(
+docker pull jasperben/jool-docker:"${JOOL_VERSION}" || { echo "Pulling the docker image failed. Trying to build myself..."; \
+docker build -t jasperben/jool-docker:"${JOOL_VERSION}" .; }
+)
 
 echo 'clean up...'
 (
