@@ -35,11 +35,11 @@ RUN set -ex \
     && apk --no-cache add \
         libnl3 libnl3-dev
         
-#RUN apt-get update \
-#    && apt-get install libnl-3-200 libnl-genl-3
-
 COPY --from=build /usr/local/bin/jool_siit /usr/bin/jool_siit
+COPY --from=build /usr/local/bin/jool /usr/bin/jool
+COPY --from=build /usr/local/share/man/man8/jool.8 /usr/share/man/man8/jool.8
 COPY --from=build /usr/local/share/man/man8/jool_siit.8 /usr/share/man/man8/jool_siit.8
 COPY --from=build /usr/local/bin/joold /usr/bin/joold
 
+COPY run.sh /root/run.sh
 COPY netsocket.json /root/netsocket.json
