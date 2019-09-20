@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JOOL_VERSION='3.5.7'
+JOOL_VERSION='4.0.5'
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then

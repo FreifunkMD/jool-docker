@@ -1,44 +1,53 @@
-FROM alpine:latest as BUILD
+FROM debian:buster-slim
 
 LABEL maintainer="Jasper Orschulko <jasper@fancydomain.eu>"
 
-ARG JOOL_VER=3.5.7
+ARG JOOL_VER=4.0.5
 
 RUN set -ex \
-    && apk --no-cache add \
+    && apt-get update \
+    && apt-get install -y \
         wget \
         ca-certificates \
         gcc \
-        build-base \
-        libnl3-dev \
+        build-essential \
+        pkg-config \
+        libnl-3-dev \
         # needed for autogen.sh
         autoconf \
         automake \
         bash \
-        # needed to stop the build from failing on the kernel module. Other than that, not needed, since kernel module only matters on host
-        linux-headers \
-        # alpine linux is based on musl libc instead of gnu libc, so installing argp-standalone
-        argp-standalone \
-    && update-ca-certificates \
+        libtool \
+        libxtables-dev \
+        libnl-genl-3-dev \
+        # needed to stop the build from failing on the kernel module (even though never used in container)
+        linux-headers-amd64 \
     && wget https://github.com/NICMx/Jool/archive/v${JOOL_VER}.tar.gz -O /jool.tar.gz \
     && mkdir /jool \
     && tar -xvf /jool.tar.gz -C /jool --strip-components=1 \
-    && cd /jool/usr \
+    && cd /jool \
     && ./autogen.sh \
-    # Add LIBNLGENL3_CFLAGS and LIBNLGENL3_LIBS to configure if you chose not to install pkg-config.
-    && ./configure LIBNLGENL3_CFLAGS=-I/usr/include/libnl3 LIBNLGENL3_LIBS="-lnl-genl-3 -lnl-3" \
+    && ./configure \
     && make -j$(nproc) \
-    && make install
-
-
-FROM alpine:latest
-
-LABEL maintainer="Jasper Orschulko <jasper@fancydomain.eu>"
-
-RUN set -ex \
-    && apk --no-cache add \
-        libnl3 
-
-COPY --from=build /usr/local/bin/jool_siit /usr/bin/jool_siit
-COPY --from=build /usr/local/share/man/man8/jool_siit.8 /usr/share/man/man8/jool_siit.8
-COPY --from=build /usr/local/bin/joold /usr/bin/joold
+    && make install \
+    && apt-get remove --purge -y \
+        wget \
+        gcc \
+        build-essential \
+        pkg-config \
+        libnl-3-dev \
+        autoconf \
+        automake \
+        libtool \
+        libxtables-dev \
+        libnl-genl-3-dev \
+        linux-headers-amd64 \
+    && apt-get autoremove -y \
+    && apt-get install -y \
+        libnl-3-200 \
+        libxtables12 \
+    && rm -rf /var/lib/apt/lists \
+    && mv /usr/local/bin/jool_siit /usr/bin/ \
+    && mv /usr/local/bin/joold /usr/bin/ \
+    && mkdir -p /usr/share/man/man8/ \
+    && mv /usr/local/share/man/man8/jool_siit.8 /usr/share/man/man8/
