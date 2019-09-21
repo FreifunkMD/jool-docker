@@ -32,6 +32,13 @@ echo 'building and installing kernel module...'
     modprobe jool
 )
 
+if lsmod | grep "jool" &> /dev/null ; then
+    echo "$MODULE is loaded!"
+else
+    echo "$MODULE is not loaded!"
+    exit 1
+fi
+
 echo 'pulling docker container...'
 (
 docker pull jasperben/jool-docker:"${JOOL_VERSION}" || { echo "Pulling the docker image failed. Trying to build myself..."; \
