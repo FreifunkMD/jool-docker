@@ -45,6 +45,7 @@ RUN set -ex \
     && apt-get autoremove -y \
     && apt-get install -y \
         libnl-3-200 \
+        libnl-genl-3-200 \
         libxtables12 \
     && rm -rf /var/lib/apt/lists \
     && mv /usr/local/bin/jool_siit /usr/bin/ \
