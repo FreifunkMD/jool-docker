@@ -55,3 +55,4 @@ RUN set -ex \
 
 COPY run.sh /root/run.sh
 COPY netsocket.json /root/netsocket.json
+COPY config.json /root/config.json

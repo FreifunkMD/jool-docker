@@ -1,0 +1,56 @@
+{
+    "comment": "Freifunk Magdeburg NAT64",
+    "instance": "default",
+    "framework": "netfilter",
+
+    "global": {
+        "pool6": "64:ff9b::/96",
+        "manually-enabled": true,
+
+        "zeroize-traffic-class": false,
+        "override-tos": false,
+        "tos": 0,
+        "mtu-plateaus": [1280, 1006, 508, 296, 68],
+        "maximum-simultaneous-opens": 16,
+        "source-icmpv6-errors-better": true,
+        "handle-rst-during-fin-rcv": false,
+        "f-args": 8,
+
+        "logging-bib": false,
+        "logging-session": false,
+
+        "address-dependent-filtering": true,
+        "drop-icmpv6-info": false,
+        "drop-externally-initiated-tcp": false,
+
+        "udp-timeout": "5:00",
+        "tcp-est-timeout": "4:00:00",
+        "tcp-trans-timeout": "4:00",
+        "icmp-timeout": "1:00",
+
+        "ss-enabled": false,
+        "ss-flush-asap": true,
+        "ss-flush-deadline": 2000,
+        "ss-capacity": 512,
+        "ss-max-payload": 1452
+    },
+
+    "pool4": [
+        {
+            "mark": 66,
+            "protocol": "TCP",
+            "prefix": "10.11.12.2",
+            "port range": "1024-65535"
+        }, {
+            "mark": 66,
+            "protocol": "UDP",
+            "prefix": "10.11.12.2",
+            "port range": "1024-65535"
+        }, {
+            "mark": 66,
+            "protocol": "ICMP",
+            "prefix": "10.11.12.2",
+            "port range": "61001-65535"
+        }
+    ]
+}
