@@ -54,4 +54,5 @@ RUN set -ex \
     && mv /usr/local/share/man/man8/jool_siit.8 /usr/share/man/man8/
 
 COPY run.sh /root/run.sh
+COPY configfile /root/jool.conf
 COPY netsocket.json /root/netsocket.json
