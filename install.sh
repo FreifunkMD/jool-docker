@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JOOL_VERSION='4.0.5'
+JOOL_VERSION='4.1.4'
 
 # Make sure only root can run our script
 if [ "$(id -u)" != "0" ]; then
@@ -28,7 +28,7 @@ echo 'building and installing kernel module...'
 (
     dkms add "jool/${JOOL_VERSION}"
     dkms build "jool/${JOOL_VERSION}"
-    dkms install "jool/${JOOL_VERSION}"
+    dkms install "jool/${JOOL_VERSION}" --force  #--force required when updating kernel modul
     modprobe jool
 )
 
