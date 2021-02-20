@@ -41,8 +41,8 @@ fi
 
 echo 'pulling docker container...'
 (
-docker pull jasperben/jool-docker:"${JOOL_VERSION}" || { echo "Pulling the docker image failed. Trying to build myself..."; \
-docker build -t jasperben/jool-docker:"${JOOL_VERSION}" .; }
+docker pull ffmd/jool-docker:"${JOOL_VERSION}" || { echo "Pulling the docker image failed. Trying to build myself..."; \
+docker build -t ffmd/jool-docker:"${JOOL_VERSION}" .; }
 )
 
 echo 'clean up...'
