@@ -15,4 +15,7 @@ The installation itself is as simple as changing the variable JOOL_VERSION in th
 ### Uninstall
 
 - remove Docker container
+- run modprobe -r jool as root
 - run `dkms uninstall jool/<VERSION>` as root
+- run `dkms remove jool/<VERSION> --all` as root
+- check `dkms status jool` as root
