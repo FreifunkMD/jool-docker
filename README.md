@@ -34,8 +34,3 @@ dkms uninstall jool/<VERSION>
 dkms remove jool/<VERSION> --all
 dkms status jool
 ```
-- remove Docker container
-- run `` as root
-- run `` as root
-- run `` as root
-- check `` as root
