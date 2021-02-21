@@ -2,7 +2,7 @@ FROM debian:buster-slim
 
 LABEL maintainer="Jasper Orschulko <jasper@fancydomain.eu>"
 
-ARG JOOL_VER=4.0.5
+ARG JOOL_VER=4.1.4
 
 RUN set -ex \
     && apt-get update \
